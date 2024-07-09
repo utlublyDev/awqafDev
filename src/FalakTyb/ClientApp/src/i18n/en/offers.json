@@ -1,0 +1,45 @@
+{
+  "falakTybApp": {
+    "offers": {
+      "home": {
+        "title": "Offers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Offers",
+        "createOrEditLabel": "Create or edit a Offers",
+        "notFound": "No Offers found"
+      },
+      "created": "A new Offers is created with identifier {{ param }}",
+      "updated": "A Offers is updated with identifier {{ param }}",
+      "deleted": "A Offers is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Offers {{ id }}?"
+      },
+      "detail": {
+        "title": "Offers"
+      },
+      "id": "ID",
+      "providerId": "Provider Id",
+      "subProviderId": "Sub Provider Id",
+      "offerNameInEnglish": "Offer Name In English",
+      "offerNameInArabic": "Offer Name In Arabic",
+      "offerAmountPercentage": "Offer Amount Percentage",
+      "offerStartDate": "Offer Start Date",
+      "offerEndDate": "Offer End Date",
+      "offerIsValidate": "Offer Is Validate",
+      "offerPrice": "Offer Price",
+      "offerCode": "Offer Code",
+      "location": "Location",
+      "offerDetailsInEnglish": "Offer Details In English",
+      "offerDetailsInArabic": "Offer Details In Arabic",
+      "addedBy": "Added By",
+      "creationDate": "Creation Date",
+      "websiteUrl": "Website Url",
+      "locationInArabic": "Location In Arabic",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "isWebsiteOrApp": "Is Website Or App",
+      "offerImageUrl": "Offer Image Url",
+      "offersCategories": "Offers Categories"
+    }
+  }
+}

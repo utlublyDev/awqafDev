@@ -1,0 +1,30 @@
+{
+  "falakTybApp": {
+    "providersCategories": {
+      "home": {
+        "title": "Providers Categories",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Providers Categories",
+        "createOrEditLabel": "Create or edit a Providers Categories",
+        "notFound": "No Providers Categories found"
+      },
+      "created": "A new Providers Categories is created with identifier {{ param }}",
+      "updated": "A Providers Categories is updated with identifier {{ param }}",
+      "deleted": "A Providers Categories is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Providers Categories {{ id }}?"
+      },
+      "detail": {
+        "title": "Providers Categories"
+      },
+      "id": "ID",
+      "providersCategorieNameInEnglish": "Providers Categorie Name In English",
+      "providersCategorieNameInArabic": "Providers Categorie Name In Arabic",
+      "providersCategorieIconUrl": "Providers Categorie Icon Url",
+      "itWillHaveHoldingCompaniesb": "It Will Have Holding Companiesb",
+      "addedBy": "Added By",
+      "status": "Status",
+      "creationDate": "Creation Date"
+    }
+  }
+}

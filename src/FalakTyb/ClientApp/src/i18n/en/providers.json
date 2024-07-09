@@ -1,0 +1,48 @@
+{
+  "falakTybApp": {
+    "providers": {
+      "home": {
+        "title": "Providers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Providers",
+        "createOrEditLabel": "Create or edit a Providers",
+        "notFound": "No Providers found"
+      },
+      "created": "A new Providers is created with identifier {{ param }}",
+      "updated": "A Providers is updated with identifier {{ param }}",
+      "deleted": "A Providers is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Providers {{ id }}?"
+      },
+      "detail": {
+        "title": "Providers"
+      },
+      "id": "ID",
+      "providerNameInEnglish": "Provider Name In English",
+      "providerNameInArabic": "Provider Name In Arabic",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "phoneNumber": "Phone Number",
+      "email": "Email",
+      "providerImageUrl": "Provider Image Url",
+      "address": "Address",
+      "isActive": "Is Active",
+      "isWeChooseForYou": "Is We Choose For You",
+      "isVip": "Is Vip",
+      "note": "Note",
+      "itWillHaveSubProviders": "It Will Have Sub Providers",
+      "addedBy": "Added By",
+      "creationDate": "Creation Date",
+      "mainServiceProviderId": "Main Service Provider Id",
+      "keyWordsInEnglish": "Key Words In English",
+      "keyWordsInArabic": "Key Words In Arabic",
+      "addressInArabic": "Address In Arabic",
+      "providerCode": "Provider Code",
+      "maximumUsageCode": "Maximum Usage Code",
+      "websiteUrl": "Website Url",
+      "facebookUrl": "Facebook Url",
+      "instagramUrl": "Instagram Url",
+      "providersCategories": "Providers Categories"
+    }
+  }
+}

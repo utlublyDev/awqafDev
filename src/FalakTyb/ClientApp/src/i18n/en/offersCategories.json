@@ -1,0 +1,30 @@
+{
+  "falakTybApp": {
+    "offersCategories": {
+      "home": {
+        "title": "Offers Categories",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Offers Categories",
+        "createOrEditLabel": "Create or edit a Offers Categories",
+        "notFound": "No Offers Categories found"
+      },
+      "created": "A new Offers Categories is created with identifier {{ param }}",
+      "updated": "A Offers Categories is updated with identifier {{ param }}",
+      "deleted": "A Offers Categories is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Offers Categories {{ id }}?"
+      },
+      "detail": {
+        "title": "Offers Categories"
+      },
+      "id": "ID",
+      "offerCategorieNameInEnglish": "Offer Categorie Name In English",
+      "offerCategorieNameInArabic": "Offer Categorie Name In Arabic",
+      "offerCategorieIconUrl": "Offer Categorie Icon Url",
+      "addedBy": "Added By",
+      "status": "Status",
+      "creationDate": "Creation Date",
+      "offerProviderId": "Offer Provider Id"
+    }
+  }
+}

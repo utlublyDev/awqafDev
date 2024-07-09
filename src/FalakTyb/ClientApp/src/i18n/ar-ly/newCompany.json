@@ -1,0 +1,33 @@
+{
+  "falakTybApp": {
+    "newCompany": {
+      "home": {
+        "title": "New Companies",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new New Company",
+        "createOrEditLabel": "Create or edit a New Company",
+        "notFound": "No New Companies found"
+      },
+      "created": "A new New Company is created with identifier {{ param }}",
+      "updated": "A New Company is updated with identifier {{ param }}",
+      "deleted": "A New Company is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete New Company {{ id }}?"
+      },
+      "detail": {
+        "title": "New Company"
+      },
+      "id": "ID",
+      "name": "Name",
+      "companyName": "Company Name",
+      "address": "Address",
+      "phoneNumber": "Phone Number",
+      "email": "Email",
+      "companyType": "Company Type",
+      "commercialRegistrationNo": "Commercial Registration No",
+      "tradeLicenseNumber": "Trade License Number",
+      "serviceType": "Service Type",
+      "creationDate": "Creation Date"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "home": {
+    "title": "Welcome, Java Hipster!",
+    "subtitle": "This is your homepage",
+    "logged": {
+      "message": "You are logged in as user \"{{username}}\"."
+    },
+    "question": "If you have any question on engineeric:",
+    "link": {
+      "homepage": "engineeric homepage",
+      "stackoverflow": "engineeric on Stack Overflow",
+      "bugtracker": "engineeric bug tracker",
+      "chat": "engineeric public chat room",
+      "follow": "follow @engineeric on Twitter"
+    },
+    "like": "If you like engineeric, don't forget to give us a star on",
+    "github": "GitHub"
+  }
+}

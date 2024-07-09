@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6</TargetFramework>
+        <RootNamespace>awqaf.Application</RootNamespace>
+        <OutputType>Library</OutputType>
+         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="JHipsterNet.Core" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+        <PackageReference Include="MediatR" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+        <PackageReference Include="Quartz" Version="3.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FalakTyb.Domain\FalakTyb.Domain.csproj" />
+        <ProjectReference Include="..\FalakTyb.Domain.Services\FalakTyb.Domain.Services.csproj" />
+        <ProjectReference Include="..\FalakTyb.Dto\FalakTyb.Dto.csproj" />
+    </ItemGroup>
+
+</Project>

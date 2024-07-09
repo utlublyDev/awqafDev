@@ -1,0 +1,27 @@
+{
+  "falakTybApp": {
+    "pushNotifications": {
+      "home": {
+        "title": "Push Notifications",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Push Notifications",
+        "createOrEditLabel": "Create or edit a Push Notifications",
+        "notFound": "No Push Notifications found"
+      },
+      "created": "A new Push Notifications is created with identifier {{ param }}",
+      "updated": "A Push Notifications is updated with identifier {{ param }}",
+      "deleted": "A Push Notifications is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Push Notifications {{ id }}?"
+      },
+      "detail": {
+        "title": "Push Notifications"
+      },
+      "id": "ID",
+      "header": "Header",
+      "details": "Details",
+      "sentBy": "Sent By",
+      "sentDate": "Sent Date"
+    }
+  }
+}

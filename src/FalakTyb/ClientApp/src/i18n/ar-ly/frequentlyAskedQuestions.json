@@ -1,0 +1,29 @@
+{
+  "falakTybApp": {
+    "frequentlyAskedQuestions": {
+      "home": {
+        "title": "Frequently Asked Questions",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Frequently Asked Questions",
+        "createOrEditLabel": "Create or edit a Frequently Asked Questions",
+        "notFound": "No Frequently Asked Questions found"
+      },
+      "created": "A new Frequently Asked Questions is created with identifier {{ param }}",
+      "updated": "A Frequently Asked Questions is updated with identifier {{ param }}",
+      "deleted": "A Frequently Asked Questions is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Frequently Asked Questions {{ id }}?"
+      },
+      "detail": {
+        "title": "Frequently Asked Questions"
+      },
+      "id": "ID",
+      "questionInEnglish": "Question In English",
+      "questionInArabic": "Question In Arabic",
+      "answerInEnglish": "Answer In English",
+      "answerInArabic": "Answer In Arabic",
+      "addedBy": "Added By",
+      "creationDate": "Creation Date"
+    }
+  }
+}

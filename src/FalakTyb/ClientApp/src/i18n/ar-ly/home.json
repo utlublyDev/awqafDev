@@ -1,0 +1,19 @@
+{
+  "home": {
+    "title": "أهلا وسهلا بك، جافا هبستر!",
+    "subtitle": "هذه صفحتك الرئيسية",
+    "logged": {
+      "message": "قمت بتسجيل الدخول كمستخدم \"{{username}}\"."
+    },
+    "question": "إذا كان لديك أي سؤال حول engineeric:",
+    "link": {
+      "homepage": " homepage",
+      "stackoverflow": "engineeric on Stack Overflow",
+      "bugtracker": "engineeric bug tracker",
+      "chat": "engineeric public chat room",
+      "follow": "follow @engineeric on Twitter"
+    },
+    "like": "إذا كنت تحب engineeric، لا تنسى أن تعطي لنا نجم على",
+    "github": "GitHub"
+  }
+}

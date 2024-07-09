@@ -1,0 +1,38 @@
+{
+  "falakTybApp": {
+    "subProviders": {
+      "home": {
+        "title": "Sub Providers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Sub Providers",
+        "createOrEditLabel": "Create or edit a Sub Providers",
+        "notFound": "No Sub Providers found"
+      },
+      "created": "A new Sub Providers is created with identifier {{ param }}",
+      "updated": "A Sub Providers is updated with identifier {{ param }}",
+      "deleted": "A Sub Providers is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Sub Providers {{ id }}?"
+      },
+      "detail": {
+        "title": "Sub Providers"
+      },
+      "id": "ID",
+      "providerNameInEnglish": "Provider Name In English",
+      "providerNameInArabic": "Provider Name In Arabic",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "phoneNumber": "Phone Number",
+      "email": "Email",
+      "providerImageUrl": "Provider Image Url",
+      "address": "Address",
+      "isActive": "Is Active",
+      "isWeChooseForYou": "Is We Choose For You",
+      "isVip": "Is Vip",
+      "note": "Note",
+      "addedBy": "Added By",
+      "itWillHaveHoldingCompanies": "It Will Have Holding Companies",
+      "creationDate": "Creation Date"
+    }
+  }
+}

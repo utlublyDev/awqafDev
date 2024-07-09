@@ -1,0 +1,28 @@
+{
+  "falakTybApp": {
+    "savedProviders": {
+      "home": {
+        "title": "Saved Providers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Saved Providers",
+        "createOrEditLabel": "Create or edit a Saved Providers",
+        "notFound": "No Saved Providers found"
+      },
+      "created": "A new Saved Providers is created with identifier {{ param }}",
+      "updated": "A Saved Providers is updated with identifier {{ param }}",
+      "deleted": "A Saved Providers is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Saved Providers {{ id }}?"
+      },
+      "detail": {
+        "title": "Saved Providers"
+      },
+      "id": "ID",
+      "userIdAwqaf": "User Id Awqaf",
+      "providerId": "Provider Id",
+      "subProviderId": "Sub Provider Id",
+      "offerId": "Offer Id",
+      "isOffer": "Is Offer"
+    }
+  }
+}
