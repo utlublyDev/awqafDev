@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, RouteComponentProps, useHistory } from "react-router-dom";
 import { Button, Row, Col, FormText } from "reactstrap";
+import axios from "axios";
+
 import {
   isNumber,
   Translate,
@@ -23,7 +25,8 @@ import { IOffersCategories } from "app/shared/model/offers-categories.model";
 import { getEntities as getOffersCategories } from "app/entities/offers-categories/offers-categories.reducer";
 import { IOffers } from "app/shared/model/offers.model";
 import { getEntity, updateEntity, createEntity, reset } from "./offers.reducer";
-import { getEntitiesproviders,
+import {
+  getEntitiesproviders,
 } from "../providers/providers.reducer"
 export const OffersUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch();
@@ -40,69 +43,68 @@ export const OffersUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const providers = useAppSelector((state) => state.providers.entities);
   const account = useAppSelector((state) => state.authentication.account);
 
-  const[startOfferDate, setStartOfferDate] = useState(null);
-  const[endOfferDate, setEndOfferDate] = useState(null);
+  const [startOfferDate, setStartOfferDate] = useState(null);
+  const [endOfferDate, setEndOfferDate] = useState(null);
   const [offerIsValidate, SetOfferIsValidate] = useState(false)
   const [isWebsiteOrApp, SetIsWebsiteOrApp] = useState(false)
   const handleClose = () => {
     props.history.push("/offers");
   };
 
-  const StartDate = isNew?dayjs(new Date()).format('YYYY-MM-DD').toString():offersEntity&&dayjs(offersEntity.offerStartDate).format('YYYY-MM-DD').toString()
-  const EndDate = isNew?dayjs(new Date()).format('YYYY-MM-DD').toString():offersEntity&&dayjs(offersEntity.offerEndDate).format('YYYY-MM-DD').toString();
+  const StartDate = isNew ? dayjs(new Date()).format('YYYY-MM-DD').toString() : offersEntity && dayjs(offersEntity.offerStartDate).format('YYYY-MM-DD').toString()
+  const EndDate = isNew ? dayjs(new Date()).format('YYYY-MM-DD').toString() : offersEntity && dayjs(offersEntity.offerEndDate).format('YYYY-MM-DD').toString();
   const isCheckedIsValidate = offersEntity?.offerIsValidate;
   const isCheckedIsOfferInWeb = offersEntity?.isWebsiteOrApp;
-  const longitude = offersEntity&& parseFloat(offersEntity.longitude);
-  const latitude =  offersEntity&& parseFloat(offersEntity.latitude);
+  const longitude = offersEntity && parseFloat(offersEntity.longitude);
+  const latitude = offersEntity && parseFloat(offersEntity.latitude);
 
 
-  const [location, setLocation] = useState({lat:latitude,lng:longitude});
+  const [location, setLocation] = useState({ lat: latitude, lng: longitude });
 
   function _onClick(obj) { setLocation({ lat: obj.lat, lng: obj.lng }); }
 
 
-  const loadMap  = (map, maps) => {
+  const loadMap = (map, maps) => {
 
-    if(isNew){
-            const marker = new maps.Marker({
-              position: new maps.LatLng( 25.286106 , 51.534817),
-              map,
-        
-              draggable: true,
-            });
-        
-          }
-          if(!isNew&&longitude&&latitude&&offersEntity)
-          {
-    
-            const marker = new maps.Marker({
-              position: new maps.LatLng(parseFloat(offersEntity.latitude), parseFloat(offersEntity.longitude ) ),
-           
-    
-              map,
-        
-              draggable: true,
-            });
-      
-          
-          }
-    
-    
-    
-          };
-  
+    if (isNew) {
+      const marker = new maps.Marker({
+        position: new maps.LatLng(25.286106, 51.534817),
+        map,
 
-          useEffect(() => {
-        
-            setLocation({ lat: isNew ? 25.286106 : latitude, lng: isNew ? 51.534817 : longitude })
-          }, [latitude,longitude]);
+        draggable: true,
+      });
+
+    }
+    if (!isNew && longitude && latitude && offersEntity) {
+
+      const marker = new maps.Marker({
+        position: new maps.LatLng(parseFloat(offersEntity.latitude), parseFloat(offersEntity.longitude)),
+
+
+        map,
+
+        draggable: true,
+      });
+
+
+    }
+
+
+
+  };
+
+
+  useEffect(() => {
+
+    setLocation({ lat: isNew ? 25.286106 : latitude, lng: isNew ? 51.534817 : longitude })
+  }, [latitude, longitude]);
 
 
   useEffect(() => {
     if (isNew) {
       dispatch(reset());
     } else {
-      
+
 
       dispatch(getEntity(props.match.params.id));
 
@@ -114,7 +116,7 @@ export const OffersUpdate = (props: RouteComponentProps<{ id: string }>) => {
     setEndOfferDate(EndDate)
     SetOfferIsValidate(isCheckedIsValidate)
     SetIsWebsiteOrApp(isCheckedIsOfferInWeb)
-  }, [StartDate,EndDate,isCheckedIsValidate,isCheckedIsOfferInWeb,longitude,latitude]);
+  }, [StartDate, EndDate, isCheckedIsValidate, isCheckedIsOfferInWeb, longitude, latitude]);
 
   useEffect(() => {
     if (updateSuccess) {
@@ -122,47 +124,76 @@ export const OffersUpdate = (props: RouteComponentProps<{ id: string }>) => {
     }
   }, [updateSuccess]);
 
-//file handler 
+  //file handler 
 
-const[animation,setAnimation] = useState(false)
-const[nameFile,setNameFile] = useState("")
-const[statusFile,setStatusFile] = useState(false)
-const [selectedFile, setSelectedFile] = useState();
-const [isFilePicked, setIsFilePicked] = useState(false);
+  const [animation, setAnimation] = useState(false)
+  const [nameFile, setNameFile] = useState("")
+  const [statusFile, setStatusFile] = useState(false)
+  const [selectedFile, setSelectedFile] = useState();
+  const [isFilePicked, setIsFilePicked] = useState(false);
 
-const changeHandler = (event) => {
-  setSelectedFile(event.target.files[0]);
-  setNameFile(event.target.files[0].name);
-  setIsFilePicked(true);
-};
+  const changeHandler = (event) => {
+    setSelectedFile(event.target.files[0]);
+    setNameFile(event.target.files[0].name);
+    setIsFilePicked(true);
+  };
+  const handleFileChange =  (event) => {
+    const chosenFile = event.target.files[0];
+    setSelectedFile(chosenFile);
 
-const handleSubmission = (e) => {
-  setAnimation(true)
-  const formData = new FormData();
-  e.preventDefault();
-  formData.append('image', selectedFile);
+    handleFileUpload(event.target.files[0])
 
-  fetch(
-    'https://file.engineeric.qa/engineeric/fileSystem',
-    {
-      method: 'POST',
-      body: formData,
-      redirect: 'follow', 
-      mode: 'no-cors'
+  };
+
+  const handleFileUpload = (file) => {
+    setAnimation(true)
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      axios
+        .post(`${SERVER_API_URL}/api/AwqafFiles`, formData)
+        .then((response) => {
+          // Handle the response from the server
+          const newFileName = response.data.replace("falaktayab/", "");
+          setNameFile(newFileName)
+          setStatusFile(true)
+          setAnimation(false)
+        })
+        .catch((error) => {
+          // Handle any errors that occur during the upload
+          console.error(error);
+        });
     }
-  )
-    .then((response) => response.text())
-    .then((result) => {
-      setStatusFile(true)
-      setAnimation(false)
-    })
-    .catch((error) => {
-      //console.error('Error:', error);
-    });
-};
+  };
+
+  const handleSubmission = (e) => {
+    setAnimation(true)
+    const formData = new FormData();
+    e.preventDefault();
+    formData.append('image', selectedFile);
+
+    fetch(
+      'https://awqaf.engineeric.qa/engineeric/fileSystem',
+      {
+        method: 'POST',
+        body: formData,
+        redirect: 'follow',
+        mode: 'no-cors'
+      }
+    )
+      .then((response) => response.text())
+      .then((result) => {
+        setStatusFile(true)
+        setAnimation(false)
+      })
+      .catch((error) => {
+        //console.error('Error:', error);
+      });
+  };
 
 
- 
+
 
 
   const saveEntity = (values) => {
@@ -171,12 +202,12 @@ const handleSubmission = (e) => {
     values.creationDate = new Date();
     values.latitude = location.lat.toString();
     values.longitude = location.lng.toString();
-    values.offerIsValidate=offerIsValidate
-    values.isWebsiteOrApp=isWebsiteOrApp
-    
-    values.offerImageUrl=isNew?"https://file.engineeric.qa/engineeric/fileSystem/Image/png/"+nameFile:nameFile===""?offersEntity.offerImageUrl:"https://file.engineeric.qa/engineeric/fileSystem/Image/png/"+nameFile;
+    values.offerIsValidate = offerIsValidate
+    values.isWebsiteOrApp = isWebsiteOrApp
 
-    values.addedBy=account?.login;
+    values.offerImageUrl = isNew ? `${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=` + nameFile : nameFile === "" ? offersEntity.offerImageUrl : `${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=` + nameFile;
+
+    values.addedBy = account?.login;
     const entity = {
       ...offersEntity,
       ...values,
@@ -184,7 +215,7 @@ const handleSubmission = (e) => {
         (it) => it.id.toString() === values.offersCategories.toString()
       ),
       providers: providers.find(
-        (it) => it.id.toString() ===  values.providerId.toString() 
+        (it) => it.id.toString() === values.providerId.toString()
       ),
     };
 
@@ -198,20 +229,20 @@ const handleSubmission = (e) => {
   const defaultValues = () =>
     isNew
       ? {
-       
+
       }
       : {
-        ...offersEntity, 
+        ...offersEntity,
         offersCategories: offersEntity?.offersCategories?.id,
         providers: offersEntity?.providerId,
 
- 
+
 
       };
-  
 
 
-      const today = new Date().toISOString().split('T')[0];
+
+  const today = new Date().toISOString().split('T')[0];
 
 
   return (
@@ -232,9 +263,9 @@ const handleSubmission = (e) => {
               onGoogleApiLoaded={({ map, maps }) => loadMap(map, maps)}
               onClick={_onClick}
 
-            /> : longitude&&latitude&&offersEntity&&<GoogleMapReact
+            /> : longitude && latitude && offersEntity && <GoogleMapReact
               bootstrapURLKeys={{ key: 'AIzaSyD07E1VvpsN_0FvsmKAj4nK9GnLq-9jtj8' }}
-              center={{ lat:parseFloat(offersEntity.latitude), lng: parseFloat(offersEntity.longitude )}}
+              center={{ lat: parseFloat(offersEntity.latitude), lng: parseFloat(offersEntity.longitude) }}
               defaultZoom={10}
               yesIWantToUseGoogleMapApiInternals
               onGoogleApiLoaded={({ map, maps }) => loadMap(map, maps)}
@@ -288,7 +319,7 @@ const handleSubmission = (e) => {
                   id="offers-offerNameInArabic"
                   name="offerNameInArabic"
                   data-cy="offerNameInArabic"
-                
+
                   type="text"
                   validate={{
                     required: {
@@ -299,105 +330,105 @@ const handleSubmission = (e) => {
                 />
 
 
-            
 
-              
-<ValidatedField className="col-span-6 sm:col-span-3 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
-                label={"العنوان بالعربي"}
-                id="offers-location"
-                name="location"
-                data-cy="location"
-                type="text"
-              />
 
-<ValidatedField className="col-span-6 sm:col-span-3 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
-                label={"العنوان بالإنجليزية"}
-                id="offers-locationInArabic"
-                name="locationInArabic"
-                data-cy="locationInArabic"
-                type="text"
-              />
 
-<ValidatedField className="col-span-6 sm:col-span-6 lg:col-span-6 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
-                label={"تفاصيل العرض بالإنجليزية"}
-                id="offers-offerDetailsInEnglish"
-                name="offerDetailsInEnglish"
-                data-cy="offerDetailsInEnglish"
-                rows={3}
-                type="textarea"
-                validate={{
-                  required: {
-                    value: true,
-                    message: translate("entity.validation.required"),
-                  },
-                }}
-              />
-           
-          
+                <ValidatedField className="col-span-6 sm:col-span-3 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
+                  label={"العنوان بالعربي"}
+                  id="offers-location"
+                  name="location"
+                  data-cy="location"
+                  type="text"
+                />
+
+                <ValidatedField className="col-span-6 sm:col-span-3 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
+                  label={"العنوان بالإنجليزية"}
+                  id="offers-locationInArabic"
+                  name="locationInArabic"
+                  data-cy="locationInArabic"
+                  type="text"
+                />
+
                 <ValidatedField className="col-span-6 sm:col-span-6 lg:col-span-6 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
-                label={"تفاصيل العرض بالعربي"}
-                id="offers-offerDetailsInArabic"
-                name="offerDetailsInArabic"
-                data-cy="offerDetailsInArabic"
-                rows={3}
-                type="textarea"
-                validate={{
-                  required: {
-                    value: true,
-                    message: translate("entity.validation.required"),
-                  },
-                }}
-              />
-  <ValidatedField className="col-span-6 sm:col-span-6 lg:col-span-6 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
-                label={"نسبة الخصم"}
-                id="offers-offerAmountPercentage"
-                name="offerAmountPercentage"
-                data-cy="offerAmountPercentage"
-                type="text"
-                validate={{
-                  required: {
-                    value: true,
-                    message: translate("entity.validation.required"),
-                  },
-                  validate: (v) =>
-                    isNumber(v) || translate("entity.validation.number"),
-                }}
-              />
+                  label={"تفاصيل العرض بالإنجليزية"}
+                  id="offers-offerDetailsInEnglish"
+                  name="offerDetailsInEnglish"
+                  data-cy="offerDetailsInEnglish"
+                  rows={3}
+                  type="textarea"
+                  validate={{
+                    required: {
+                      value: true,
+                      message: translate("entity.validation.required"),
+                    },
+                  }}
+                />
 
- <div className="col-span-6 sm:col-span-3 lg:col-span-3">
-          <label htmlFor="contract-end-Date" className="block text-sm font-medium text-gray-700 text-right mr-3 mb-3">
-            تاريخ انتهاء العرض  
-             </label>
-             <input
-      
+
+                <ValidatedField className="col-span-6 sm:col-span-6 lg:col-span-6 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
+                  label={"تفاصيل العرض بالعربي"}
+                  id="offers-offerDetailsInArabic"
+                  name="offerDetailsInArabic"
+                  data-cy="offerDetailsInArabic"
+                  rows={3}
+                  type="textarea"
+                  validate={{
+                    required: {
+                      value: true,
+                      message: translate("entity.validation.required"),
+                    },
+                  }}
+                />
+                <ValidatedField className="col-span-6 sm:col-span-6 lg:col-span-6 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
+                  label={"نسبة الخصم"}
+                  id="offers-offerAmountPercentage"
+                  name="offerAmountPercentage"
+                  data-cy="offerAmountPercentage"
+                  type="text"
+                  validate={{
+                    required: {
+                      value: true,
+                      message: translate("entity.validation.required"),
+                    },
+                    validate: (v) =>
+                      isNumber(v) || translate("entity.validation.number"),
+                  }}
+                />
+
+                <div className="col-span-6 sm:col-span-3 lg:col-span-3">
+                  <label htmlFor="contract-end-Date" className="block text-sm font-medium text-gray-700 text-right mr-3 mb-3">
+                    تاريخ انتهاء العرض
+                  </label>
+                  <input
+
                     defaultValue={endOfferDate}
-                    onChange={(e) => {setEndOfferDate(e.target.value)}}
+                    onChange={(e) => { setEndOfferDate(e.target.value) }}
                     id="contract-end-Date"
                     name="contract-end-Date"
                     type="date"
-                    min={startOfferDate} 
+                    min={startOfferDate}
                     required
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#827349] focus:border-[#827349] sm:text-sm"
                   />
-          </div>
-          <div className="col-span-6 sm:col-span-3 lg:col-span-3">
-          <label htmlFor="contract-Start-Date" className="block text-sm font-medium text-gray-700 text-right mr-3 mb-3">
-            تاريخ بدء العرض
-            </label>
-            <input
-            defaultValue={startOfferDate}
+                </div>
+                <div className="col-span-6 sm:col-span-3 lg:col-span-3">
+                  <label htmlFor="contract-Start-Date" className="block text-sm font-medium text-gray-700 text-right mr-3 mb-3">
+                    تاريخ بدء العرض
+                  </label>
+                  <input
+                    defaultValue={startOfferDate}
                     id="contract-start-Date"
                     name="contract-start-Date"
                     type="date"
                     required
                     min={today}
-                    onChange={(e) => {setStartOfferDate(e.target.value)}}
+                    onChange={(e) => { setStartOfferDate(e.target.value) }}
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#827349] focus:border-[#827349] sm:text-sm"
                   />
-          </div>
+                </div>
 
 
-         
+
 
                 <div className="col-span-6 sm:col-span-6 lg:col-span-6" dir="rtl">
 
@@ -420,8 +451,8 @@ const handleSubmission = (e) => {
                       </div>
                       <div className="-ml-16 text-sm">
                         <label htmlFor="active" className="font-medium text-gray-700">
-                        تفعيل الخصم
-  
+                          تفعيل الخصم
+
                         </label>
                         <p id="active" className="text-gray-500">
 
@@ -445,10 +476,10 @@ const handleSubmission = (e) => {
                       </div>
                       <div className="-ml-16 text-sm">
                         <label htmlFor="isWebsiteOrApp" className="font-medium text-gray-700">
-                        هل العرض متوفر على موقع
+                          هل العرض متوفر على موقع
                         </label>
                         <p id="isWebsiteOrApp" className="text-gray-500">
- عند التفعيل سوف يتم عرض الرابط العرض في البرنامج </p>
+                          عند التفعيل سوف يتم عرض الرابط العرض في البرنامج </p>
                       </div>
                     </div>
                   </fieldset>
@@ -457,17 +488,17 @@ const handleSubmission = (e) => {
 
 
 
-            {isWebsiteOrApp&&<ValidatedField className="col-span-6 sm:col-span-3 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
+                {isWebsiteOrApp && <ValidatedField className="col-span-6 sm:col-span-3 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
 
-                label={"رابط موقع الالكتروني للعرض"}
-                id="offers-websiteUrl"
-                name="websiteUrl"
-                data-cy="websiteUrl"
-                type="text"
-              />}
+                  label={"رابط موقع الالكتروني للعرض"}
+                  id="offers-websiteUrl"
+                  name="websiteUrl"
+                  data-cy="websiteUrl"
+                  type="text"
+                />}
 
 
-{isWebsiteOrApp&&<ValidatedField className="col-span-6 sm:col-span-3 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
+                {isWebsiteOrApp && <ValidatedField className="col-span-6 sm:col-span-3 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
                   label={"كود الخصم   "}
                   id="offers-offerCode"
                   name="offerCode"
@@ -485,28 +516,28 @@ const handleSubmission = (e) => {
 
 
 
-<ValidatedField className="col-span-6 sm:col-span-6 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
-                id="offers-offersCategories"
-                name="offersCategories"
-                data-cy="offersCategories"
-                label={"فئة الخصم"}
-                type="select"
-              >
-               <option value="">اختر   فئة  العرض  </option>
-                {offersCategories
-                  ? offersCategories.map((otherEntity) => (
+                <ValidatedField className="col-span-6 sm:col-span-6 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
+                  id="offers-offersCategories"
+                  name="offersCategories"
+                  data-cy="offersCategories"
+                  label={"فئة الخصم"}
+                  type="select"
+                >
+                  <option value="">اختر   فئة  العرض  </option>
+                  {offersCategories
+                    ? offersCategories.map((otherEntity) => (
                       <option value={otherEntity.id} key={otherEntity.id}>
                         {otherEntity.offerCategorieNameInEnglish}
                       </option>
                     ))
-                  : null}
-              </ValidatedField>
-              
+                    : null}
+                </ValidatedField>
 
-           <ValidatedField className="col-span-6 sm:col-span-6 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
-                   id="offers-providerId"
-                   name="providerId"
-                   data-cy="providerId"
+
+                <ValidatedField className="col-span-6 sm:col-span-6 lg:col-span-3 text-sm font-medium text-gray-700 text-right mt-5 mb-10  space-y-3"
+                  id="offers-providerId"
+                  name="providerId"
+                  data-cy="providerId"
                   label={"مقدم خدمة العرض"}
                   type="select"
 
@@ -521,71 +552,66 @@ const handleSubmission = (e) => {
                     : null}
                 </ValidatedField>
 
-                
 
-             
+
+
 
 
                 <div className="col-span-6 sm:col-span-6 lg:col-span-6">
 
-                  <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5  mt-8 " dir="rtl">
-                    <label htmlFor="cover-photo" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                      ارفاق  صوره الخصم
-                    </label>
-                    <div className="mt-1 sm:mt-0 sm:col-span-2">
-                      <div className="max-w-lg flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                        <div className="space-y-1 text-center">
-                          <svg
-                            className="mx-auto h-12 w-12 text-gray-400"
-                            stroke="currentColor"
-                            fill="none"
-                            viewBox="0 0 48 48"
-                            aria-hidden="true"
-                          >
-                            <path
-                              d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                              strokeWidth={2}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                          <div className="flex text-sm text-gray-600 ml-1">
-                            <label
-                              htmlFor="file-upload"
-                              className="relative cursor-pointer  bg-white rounded-sm font-medium text-[#827349] hover:text-[#827349] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#505050]"
-                            >
-                              <span>رفع صوره</span>
-                              <input id="file-upload"  onChange={changeHandler} name="file-upload" type="file" accept="image/png" className="sr-only" />
-                            </label>
-                            
-                          </div>
-                          <p className="text-xs text-gray-500">PNG UP To 2MB</p>
-                          <div className="flex justify-center items-center text-sm ">
-				<button   className="relative cursor-pointer  bg-white rounded-sm font-sm text-[#827349] hover:text-[#827349] " onClick={handleSubmission}>
-          
-        {animation&&<div className="flex items-center justify-center space-x-2 animate-bounce">
-    <div className="w-3 h-3 bg-[#827349]  rounded-full"></div>
-    <div className="w-3 h-3 bg-[#827349] hite rounded-full"></div>
-    <div className="w-3 h-3 bg-[#827349] rounded-full"></div>
+                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5  mt-8 " dir="rtl">
 
-</div>}
-    
-          
-          رفع إلى الخادم
-          
-          
-          
-          </button>
-			</div>
+                
+                  <label htmlFor="cover-photo" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                    ارفاق صورة الخصم
+                  </label>
+                  <div className="mt-1 sm:mt-0 sm:col-span-2">
+                    <div className="max-w-lg flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                      <div className="space-y-1 text-center">
+                        <svg
+                          className="mx-auto h-12 w-12 text-gray-400"
+                          stroke="currentColor"
+                          fill="none"
+                          viewBox="0 0 48 48"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        <div className="flex text-sm text-gray-600 ml-1">
+                          <label
+                            htmlFor="file-upload"
+                            className="relative cursor-pointer w-1/2 bg-white rounded-sm font-medium text-[#827349] hover:text-[#827349] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#505050]"
+                          >
+                            {/* <span>اختر الملف</span> */}
+                            <input type="file" accept="image/png" onChange={handleFileChange} />
+                          </label>
+
+                        </div>
+                        <p className="text-xs text-gray-500"> PNG UP to 2MB  {nameFile}</p>
+                        <div className="flex text-sm ">
+                          {animation && <div className="flex items-center justify-center space-x-2 animate-bounce">
+                            <div className="w-3 h-3 bg-[#827349]  rounded-full"></div>
+                            <div className="w-3 h-3 bg-[#827349] hite rounded-full"></div>
+                            <div className="w-3 h-3 bg-[#827349] rounded-full"></div>
+
+                          </div>}
 
 
                         </div>
                       </div>
+
                     </div>
 
                   </div>
 
                 </div>
+
+              </div>
 
 
 
@@ -595,7 +621,7 @@ const handleSubmission = (e) => {
                     id="save-entity"
                     data-cy="entityCreateSaveButton"
                     type="submit"
-                    disabled={isNew&&!statusFile}
+                    disabled={isNew && !statusFile}
 
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-8 py-2 bg-[#827349] text-base font-medium text-white hover:bg-[#827349] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#827349] sm:ml-3 sm:w-auto sm:text-sm"
                   // onClick={confirmDelete}

@@ -251,7 +251,7 @@ export const OffersCategoriesUpdate = (
                             className="relative cursor-pointer  bg-white rounded-sm font-medium text-[#827349] hover:text-[#827349] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#505050]"
                           >
                             <span>رفع الصوره</span>
-                            <input id="file-upload" name="file-upload" type="file" className="sr-only" />
+                            <input id="file-upload" name="file-upload" type="file" accept="image/png" className="sr-only" />
                           </label>
                           <p className="pl-1">أو اسحب الصوره</p>
                         </div>

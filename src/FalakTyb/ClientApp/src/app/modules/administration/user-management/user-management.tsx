@@ -99,12 +99,12 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
   return (
     <div className="px-4 sm:px-6 lg:px-8  flex justify-center  flex-col  container ml-8   " style={{ width: "78%" }}>
       <div className="sm:flex sm:items-center ">
-      <div className="mt-4 sm:mt-0 sm:flex-none">
+      {/* <div className="mt-4 sm:mt-0 sm:flex-none">
           <Link to="/account/register"
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-[#827349] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#827349] focus:outline-none focus:ring-2 focus:ring-[#827349] focus:ring-offset-2 sm:w-auto">
             + اضافة حساب
           </Link>
-        </div>
+        </div> */}
         <div className="flex-1 flex items-center justify-center px-2  lg:justify-start">
           {/* <button
             type="button"
@@ -143,40 +143,12 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
                         </span>
                       </a>
                     </th>
-                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                      <a href="#" className="group inline-flex">
-                      اسم االمستخدم                     
-                         <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
-
-                        </span>
-                      </a>
-                    </th>
+                  
             
                     
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      <a href="#" className="group inline-flex">
-                      البريد الإلكتروني                    
-                          <span className="ml-2 flex-none rounded bg-gray-200 text-gray-900 group-hover:bg-gray-300">
+                 
+                  
 
-                        </span>
-                      </a>
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      <a href="#" className="group inline-flex">
-                      اللغة
-                        <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
-
-                        </span>
-                      </a>
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      <a href="#" className="group inline-flex">
-نوع الحساب 
-                        <span className="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
-
-                        </span>
-                      </a>
-                    </th>
 
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                       <a href="#" className="group inline-flex">
@@ -224,17 +196,10 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
   
   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.lastName}</td>
 
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.login}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.email}</td>
 
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.langKey}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.authorities
-                  ? user.authorities.map((authority, j) => (
-                     
-                        <Badge key={j} color="info">{authority}</Badge>
-                    
-                    ))
-                  : null}</td>
+                   
+                                         
+                                         
                                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.emplyeeCard}</td>
 
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{creationDateString}</td>

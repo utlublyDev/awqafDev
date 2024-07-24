@@ -114,17 +114,27 @@ namespace awqaf.Domain.Services
             }
         }
 
-        public virtual async Task<User> ActivateRegistration(string key)
-        {
-            _log.LogDebug($"Activating user for activation key {key}");
-            var user = await _userManager.Users.SingleOrDefaultAsync(it => it.ActivationKey == key);
-            if (user == null) return null;
-            user.Activated = true;
-            user.ActivationKey = null;
-            await _userManager.UpdateAsync(user);
-            _log.LogDebug($"Activated user: {user}");
-            return user;
-        }
+     
+
+
+
+  public virtual async Task<User> ActivateRegistration(string key)
+    {
+        _log.LogDebug($"Activating user for activation key {key}");
+    var user = await _userManager.Users.SingleOrDefaultAsync(it => it.ActivationKey == key);
+
+
+        if (user == null) return null;
+         List<string> roles = new List<string>();
+         roles.Add("ROLE_USER");
+        CreateUserRoles(user,roles);
+        user.Activated = true;
+        user.ActivationKey = "0123456789";
+        await _userManager.UpdateAsync(user);
+        _log.LogDebug($"Activated user: {user}");
+        return user;
+    }
+
 
 
         public virtual async Task<User> RegisterUser(User userToRegister, string password)
@@ -153,10 +163,12 @@ namespace awqaf.Domain.Services
                 Email = userToRegister.Email.ToLowerInvariant(),
                 ImageUrl = userToRegister.ImageUrl,
                 LangKey = userToRegister.LangKey,
+                EmplyeeCard =userToRegister.EmplyeeCard,
                 // new user is not active
-                Activated = false,
+                Activated = true,
                 // new user gets registration key
-                ActivationKey = RandomUtil.GenerateActivationKey()
+              ActivationKey = "0123456789"
+              
                 //TODO manage authorities
             };
             await _userManager.CreateAsync(newUser);
@@ -164,7 +176,7 @@ namespace awqaf.Domain.Services
             return newUser;
         }
 
-        public virtual async Task UpdateUser(string firstName, string lastName, string email, string langKey, string imageUrl)
+        public virtual async Task UpdateUser(string firstName, string lastName, string email, string langKey, string imageUrl,string EmplyeeCard)
         {
             var userName = _userManager.GetUserName(_httpContextAccessor.HttpContext.User);
             var user = await _userManager.FindByNameAsync(userName);
@@ -175,6 +187,7 @@ namespace awqaf.Domain.Services
                 user.Email = email;
                 user.LangKey = langKey;
                 user.ImageUrl = imageUrl;
+                user.EmplyeeCard = EmplyeeCard;
                 await _userManager.UpdateAsync(user);
                 _log.LogDebug($"Changed Information for User: {user}");
             }
@@ -241,7 +254,7 @@ namespace awqaf.Domain.Services
             await _userManager.RemoveFromRolesAsync(user, roles);
         }
 
-        public Task UpdateUser(string firstName, string lastName, string email, string langKey, string imageUrl, string EmplyeeCard) => throw new NotImplementedException();
+        // public Task UpdateUser(string firstName, string lastName, string email, string langKey, string imageUrl, string EmplyeeCard) => throw new NotImplementedException();
         public Task<User> NotificationSettingUpdate(bool NotificationSetting, string expoKey, string lang) => throw new NotImplementedException();
     }
 }

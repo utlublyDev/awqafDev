@@ -248,9 +248,25 @@ const [word,setWord] = useState("")
 
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-[#827349] underline">
                         <div className="ml-4 flex-shrink-0">
-                    <a href={contract.contarctFileUrl} className="font-medium text-[#827349] hover:text-[#827349]">
+                    {/* <a href={contract.contarctFileUrl} className="font-medium text-[#827349] hover:text-[#827349]">
                     {contract.contarctFileUrl==null||""?"لايوجد ملف":"تحميل"}
-                    </a>
+                    </a> */}
+                    <button onClick={()=>{
+
+const link = document.createElement('a');
+link.href = contract.contarctFileUrl; // Replace with the actual file URL
+const searchParams = new URLSearchParams(new URL(contract.contarctFileUrl).search);
+const fileName = searchParams.get('FileName');
+// Set the file name
+link.download = fileName; // Replace with the desired file name
+
+// Simulate a click on the anchor element to start the download
+link.click();
+
+
+                    }}>
+  {contract.contarctFileUrl==null||""?"لايوجد ملف":"تحميل"}
+                    </button>
                   </div>
                           
                          

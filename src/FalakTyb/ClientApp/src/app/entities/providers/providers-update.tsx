@@ -32,6 +32,7 @@ import {
   getEntitiesproviders,
 } from "./providers.reducer";
 import { setLocale } from "app/shared/reducers/locale";
+import axios from "axios";
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
@@ -108,7 +109,35 @@ const[nameFile,setNameFile] = useState("")
 const[statusFile,setStatusFile] = useState(false)
 const [selectedFile, setSelectedFile] = useState();
 const [isFilePicked, setIsFilePicked] = useState(false);
+const handleFileChange =  (event) => {
+  const chosenFile = event.target.files[0];
+  setSelectedFile(chosenFile);
 
+  handleFileUpload(event.target.files[0])
+
+};
+
+const handleFileUpload = (file) => {
+  setAnimation(true)
+  if (file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    axios
+      .post(`${SERVER_API_URL}/api/AwqafFiles`, formData)
+      .then((response) => {
+        // Handle the response from the server
+        const newFileName = response.data.replace("falaktayab/", "");
+        setNameFile(newFileName)
+        setStatusFile(true)
+        setAnimation(false)
+      })
+      .catch((error) => {
+        // Handle any errors that occur during the upload
+        console.error(error);
+      });
+  }
+};
 const changeHandler = (event) => {
   setSelectedFile(event.target.files[0]);
   setNameFile(event.target.files[0].name);
@@ -199,7 +228,7 @@ const handleSubmission = (e) => {
     values.providerCode= Math.floor(1000 + Math.random() * 9000);
     values.latitude = location.lat.toString();
     values.longitude = location.lng.toString();
-    values.providerImageUrl = isNew?"https://file.engineeric.qa/engineeric/fileSystem/Image/png/"+nameFile:nameFile===""?providersEntity.providerImageUrl:"https://file.engineeric.qa/engineeric/fileSystem/Image/png/"+nameFile;
+    values.providerImageUrl = isNew?`${SERVER_API_URL}/get/fileData?FileName=`+nameFile:nameFile===""?providersEntity.providerImageUrl:`${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=`+nameFile;
     const entity = {
       ...providersEntity,
       ...values,
@@ -579,67 +608,60 @@ const handleSubmission = (e) => {
                   </p>
                 </div>
 
-
                 <div className="col-span-6 sm:col-span-6 lg:col-span-6">
 
-                  <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5  mt-8 " dir="rtl">
-                    <label htmlFor="cover-photo" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                      ارفاق  الشعار مزود الخدمة
-                    </label>
-                    <div className="mt-1 sm:mt-0 sm:col-span-2">
-                      <div className="max-w-lg flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                        <div className="space-y-1 text-center">
-                          <svg
-                            className="mx-auto h-12 w-12 text-gray-400"
-                            stroke="currentColor"
-                            fill="none"
-                            viewBox="0 0 48 48"
-                            aria-hidden="true"
-                          >
-                            <path
-                              d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                              strokeWidth={2}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                          <div className="flex text-sm text-gray-600 ml-1">
-                            <label
-                              htmlFor="file-upload"
-                              className="relative cursor-pointer  bg-white rounded-sm font-medium text-[#827349] hover:text-[#827349] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#505050]"
-                            >
-                              <span>رفع الشعار</span>
-                              <input id="file-upload"  onChange={changeHandler} name="file-upload" type="file" accept="image/png" className="sr-only" />
+<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5  mt-8 " dir="rtl">
 
-                            </label>
-                          
-                          </div>
-                          <p className="text-xs text-gray-500">PNG UP to 2MB</p>
-                          <div className="flex justify-center items-center text-sm ">
-				<button   className="relative cursor-pointer  bg-white rounded-sm font-sm text-[#827349] hover:text-[#827349] " onClick={handleSubmission}>
-          
-        {animation&&<div className="flex items-center justify-center space-x-2 animate-bounce">
-    <div className="w-3 h-3 bg-[#827349]  rounded-full"></div>
-    <div className="w-3 h-3 bg-[#827349] hite rounded-full"></div>
-    <div className="w-3 h-3 bg-[#827349] rounded-full"></div>
+  <label htmlFor="cover-photo" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+ارفاق شعار مزود الخدمة  </label>
+  <div className="mt-1 sm:mt-0 sm:col-span-2">
+    <div className="max-w-lg flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+      <div className="space-y-1 text-center">
+        <svg
+          className="mx-auto h-12 w-12 text-gray-400"
+          stroke="currentColor"
+          fill="none"
+          viewBox="0 0 48 48"
+          aria-hidden="true"
+        >
+          <path
+            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <div className="flex text-sm text-gray-600 ml-1">
+          <label
+            htmlFor="file-upload"
+            className="relative cursor-pointer w-1/2 bg-white rounded-sm font-medium text-[#827349] hover:text-[#827349] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#505050]"
+          >
+            {/* <span>اختر الملف</span> */}
+            <input type="file"  accept="image/png" onChange={handleFileChange} />
+          </label>
 
-</div>}
-    
-          
-          رفع إلى الخادم
-          
-          
-          
-          </button>
-			</div>
-                        </div>
-           
-                      </div>
-                    </div>
+        </div>
+        <p className="text-xs text-gray-500"> PDF UP to 2MB  {nameFile}</p>
+        <div className="flex text-sm ">
+          {animation && <div className="flex items-center justify-center space-x-2 animate-bounce">
+            <div className="w-3 h-3 bg-[#827349]  rounded-full"></div>
+            <div className="w-3 h-3 bg-[#827349] hite rounded-full"></div>
+            <div className="w-3 h-3 bg-[#827349] rounded-full"></div>
 
-                  </div>
+          </div>}
 
-                </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+               
 
 
 

@@ -32,6 +32,8 @@ namespace awqaf.Domain
         public bool NotificationSetting { get; set; }
 
 
+
+
         public string NotificationExpoKey { get; set; }
 
 

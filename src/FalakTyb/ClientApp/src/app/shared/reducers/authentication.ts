@@ -68,15 +68,21 @@ export const login: (
       authenticate({ username, password, rememberMe })
     );
     const response = result.payload as AxiosResponse;
-    const bearerToken = response?.headers?.authorization;
-    if (bearerToken && bearerToken.slice(0, 7) === "Bearer ") {
-      const jwt = bearerToken.slice(7, bearerToken.length);
+
+    const bearerToken = response?.data?.id_token;
+
+    if (bearerToken!=null) {
+      const jwt = bearerToken;
+
       if (rememberMe) {
         Storage.local.set(AUTH_TOKEN_KEY, jwt);
       } else {
         Storage.session.set(AUTH_TOKEN_KEY, jwt);
       }
     }
+
+
+    
     dispatch(getSession());
   };
 

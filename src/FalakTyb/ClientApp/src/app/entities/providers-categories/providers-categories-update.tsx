@@ -27,6 +27,7 @@ import {
 } from "./providers-categories.reducer";
 import { useForm } from "react-hook-form";
 import { Switch } from "@headlessui/react";
+import axios from "axios";
 
 export const ProvidersCategoriesUpdate = (
   props: RouteComponentProps<{ id: string }>
@@ -52,63 +53,92 @@ export const ProvidersCategoriesUpdate = (
     (state) => state.providersCategories.updateSuccess
   );
   const handleClose = () => {
-    props.history.push("/providers-categories"+props.location.search);
-   
-   
+    props.history.push("/providers-categories" + props.location.search);
+
+
   };
 
 
 
 
-let isCheckedStatus  = isNew?false: providersCategoriesEntity.status;
-const handleChangeStatus=(e)=> {
-  isCheckedStatus = e.target.checked;
-  
-}
-let isCheckedHolding  = isNew?false: providersCategoriesEntity.itWillHaveHoldingCompaniesb;
-const handleChangeHolding=(e)=> {
-  isCheckedHolding = e.target.checked;
+  let isCheckedStatus = isNew ? false : providersCategoriesEntity.status;
+  const handleChangeStatus = (e) => {
+    isCheckedStatus = e.target.checked;
 
-}
+  }
+  let isCheckedHolding = isNew ? false : providersCategoriesEntity.itWillHaveHoldingCompaniesb;
+  const handleChangeHolding = (e) => {
+    isCheckedHolding = e.target.checked;
 
-//file handler 
+  }
 
-const[animation,setAnimation] = useState(false)
-const[nameFile,setNameFile] = useState("")
-const[statusFile,setStatusFile] = useState(false)
-const [selectedFile, setSelectedFile] = useState();
-const [isFilePicked, setIsFilePicked] = useState(false);
+  //file handler 
 
-const changeHandler = (event) => {
-  setSelectedFile(event.target.files[0]);
-  setNameFile(event.target.files[0].name);
-  setIsFilePicked(true);
-};
+  const [animation, setAnimation] = useState(false)
+  const [nameFile, setNameFile] = useState("")
+  const [statusFile, setStatusFile] = useState(false)
+  const [selectedFile, setSelectedFile] = useState();
+  const [isFilePicked, setIsFilePicked] = useState(false);
 
-const handleSubmission = (e) => {
-  setAnimation(true)
-  const formData = new FormData();
-  e.preventDefault();
-  formData.append('image', selectedFile);
+  const changeHandler = (event) => {
+    setSelectedFile(event.target.files[0]);
+    setNameFile(event.target.files[0].name);
+    setIsFilePicked(true);
+  }; 
+  const handleFileChange =  (event) => {
+    const chosenFile = event.target.files[0];
+    setSelectedFile(chosenFile);
 
-  fetch(
-    'https://file.engineeric.qa/engineeric/fileSystem',
-    {
-      method: 'POST',
-      body: formData,
-      redirect: 'follow', 
-      mode: 'no-cors'
+    handleFileUpload(event.target.files[0])
+
+  };
+
+  const handleFileUpload = (file) => {
+    setAnimation(true)
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      axios
+        .post(`${SERVER_API_URL}/api/AwqafFiles`, formData)
+        .then((response) => {
+          // Handle the response from the server
+          const newFileName = response.data.replace("falaktayab/", "");
+          setNameFile(newFileName)
+          setStatusFile(true)
+          setAnimation(false)
+        })
+        .catch((error) => {
+          // Handle any errors that occur during the upload
+          console.error(error);
+        });
     }
-  )
-    .then((response) => response.text())
-    .then((result) => {
-      setStatusFile(true)
-      setAnimation(false)
-    })
-    .catch((error) => {
-      //console.error('Error:', error);
-    });
-};
+  };
+
+  const handleSubmission = (e) => {
+    setAnimation(true)
+    const formData = new FormData();
+    e.preventDefault();
+    formData.append('image', selectedFile);
+
+    fetch(
+      'https://file.engineeric.qa/engineeric/fileSystem',
+      {
+        method: 'POST',
+        body: formData,
+        redirect: 'follow',
+        mode: 'no-cors'
+      }
+    )
+      .then((response) => response.text())
+      .then((result) => {
+        setStatusFile(true)
+        setAnimation(false)
+      })
+      .catch((error) => {
+        //console.error('Error:', error);
+      });
+  };
 
 
 
@@ -117,15 +147,15 @@ const handleSubmission = (e) => {
     if (isNew) {
       dispatch(reset());
       isCheckedStatus = false
-      isCheckedHolding=false
+      isCheckedHolding = false
 
     } else {
-     // dispatch(reset());
+      // dispatch(reset());
       dispatch(getEntity(props.match.params.id));
-   
+
 
     }
-  }, [isCheckedStatus,isCheckedHolding]);
+  }, [isCheckedStatus, isCheckedHolding]);
 
   useEffect(() => {
     if (updateSuccess) {
@@ -135,12 +165,12 @@ const handleSubmission = (e) => {
 
 
   const saveEntity = (values) => {
-  
-   values.status = isCheckedStatus;
+
+    values.status = isCheckedStatus;
     values.creationDate = new Date();
     values.addedBy = account.login;
     values.itWillHaveHoldingCompaniesb = isCheckedHolding;
-    values.providersCategorieIconUrl=isNew?"https://file.engineeric.qa/engineeric/fileSystem/Image/png/"+nameFile:nameFile===""?providersCategoriesEntity.providersCategorieIconUrl:"https://file.engineeric.qa/engineeric/fileSystem/Image/png/"+nameFile;
+    values.providersCategorieIconUrl = isNew ? `${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=` + nameFile : nameFile === "" ? providersCategoriesEntity.providersCategorieIconUrl : `${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=` + nameFile;
 
 
 
@@ -153,11 +183,11 @@ const handleSubmission = (e) => {
 
     if (isNew) {
       dispatch(createEntity(entity));
-   
+
 
     } else {
       dispatch(updateEntity(entity));
-    
+
 
 
     }
@@ -231,16 +261,16 @@ const handleSubmission = (e) => {
                   },
                 }}
               />
-      
+
 
               <div className="col-span-6 sm:col-span-6 lg:col-span-6" dir="rtl">
-      
+
                 <fieldset className="space-y-5 -ml-16 mt-5 mb-10">
 
                   <div className="relative flex items-start">
                     <div className="flex items-center h-5">
                       <input
-                       id="providers-categories-status"
+                        id="providers-categories-status"
                         aria-describedby="providers-categories-status"
                         name="providers-categories-status"
                         type="checkbox"
@@ -275,13 +305,13 @@ const handleSubmission = (e) => {
                         aria-describedby="providers-categories-itWillHaveHoldingCompaniesb"
                         name="providers-categories-itWillHaveHoldingCompaniesb"
                         data-cy="providers-categories-itWillHaveHoldingCompaniesb"
-                       
+
                         type="checkbox"
                         defaultChecked={isCheckedHolding}
                         onChange={e => handleChangeHolding(e)}
-                       // defaultChecked={providersCategoriesEntity.itWillHaveHoldingCompaniesb}
+                        // defaultChecked={providersCategoriesEntity.itWillHaveHoldingCompaniesb}
 
-                       // onChange={() => setItWillHaveHoldingCompaniesb(!itWillHaveHoldingCompaniesb)}
+                        // onChange={() => setItWillHaveHoldingCompaniesb(!itWillHaveHoldingCompaniesb)}
 
 
                         className="focus:ring-[#827349] h-4 w-4 text-[#827349] border-gray-300 rounded mt-5"
@@ -302,97 +332,84 @@ const handleSubmission = (e) => {
 
 
                 </fieldset>
-              </div>
-
-              <div className="col-span-6 sm:col-span-6 lg:col-span-6">
-
                 <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5  mt-8 " dir="rtl">
-                  <label htmlFor="cover-photo" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                    ارفاق أيقونة الفئة
-                  </label>
-                  <div className="mt-1 sm:mt-0 sm:col-span-2">
-                    <div className="max-w-lg flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                      <div className="space-y-1 text-center">
-                        <svg
-                          className="mx-auto h-12 w-12 text-gray-400"
-                          stroke="currentColor"
-                          fill="none"
-                          viewBox="0 0 48 48"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                            strokeWidth={2}
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                        <div className="flex text-sm text-gray-600 ml-1">
-                          <label
-                            htmlFor="file-upload"
-                            className="relative cursor-pointer  bg-white rounded-sm font-medium text-[#827349] hover:text-[#827349] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#505050]"
-                          >
-                            <span>رفع الصوره</span>
-                            <input id="file-upload"  onChange={changeHandler} name="file-upload" type="file" accept="image/png" className="sr-only" />
-                          </label>
-              
-                        </div>
-                        <p className="text-xs text-gray-500">PNG to 2MB</p>
 
-                        <div className="flex justify-center items-center text-sm ">
-				<button   className="relative cursor-pointer  bg-white rounded-sm font-sm text-[#827349] hover:text-[#827349] " onClick={handleSubmission}>
-          
-        {animation&&<div className="flex items-center justify-center space-x-2 animate-bounce">
-    <div className="w-3 h-3 bg-[#827349]  rounded-full"></div>
-    <div className="w-3 h-3 bg-[#827349] hite rounded-full"></div>
-    <div className="w-3 h-3 bg-[#827349] rounded-full"></div>
+<label htmlFor="cover-photo" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+  ارفاق صورة الفئة  </label>
+<div className="mt-1 sm:mt-0 sm:col-span-2">
+  <div className="max-w-lg flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+    <div className="space-y-1 text-center">
+      <svg
+        className="mx-auto h-12 w-12 text-gray-400"
+        stroke="currentColor"
+        fill="none"
+        viewBox="0 0 48 48"
+        aria-hidden="true"
+      >
+        <path
+          d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      <div className="flex text-sm text-gray-600 ml-1">
+        <label
+          htmlFor="file-upload"
+          className="relative cursor-pointer w-1/2 bg-white rounded-sm font-medium text-[#827349] hover:text-[#827349] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#505050]"
+        >
+          {/* <span>اختر الملف</span> */}
+          <input type="file" accept="image/png" onChange={handleFileChange} />
+        </label>
 
-</div>}
-    
-          
-          رفع إلى الخادم
-          
-          
-          
-          </button>
-			</div>
+      </div>
+      <p className="text-xs text-gray-500"> PNG UP to 2MB  {nameFile}</p>
+      <div className="flex text-sm ">
+        {animation && <div className="flex items-center justify-center space-x-2 animate-bounce">
+          <div className="w-3 h-3 bg-[#827349]  rounded-full"></div>
+          <div className="w-3 h-3 bg-[#827349] hite rounded-full"></div>
+          <div className="w-3 h-3 bg-[#827349] rounded-full"></div>
+
+        </div>}
 
 
+      </div>
+    </div>
 
-                      </div>
-                    </div>
-                  </div>
+  </div>
 
-                </div>
+</div>
 
+</div>
               </div>
 
+             
 
 
               <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse  py-4 ml-4 flex justify-end">
-              <Button
+                <Button
 
-                id="save-entity"
-                data-cy="entityCreateSaveButton"
-                type="submit"
-                disabled={isNew&&!statusFile}
+                  id="save-entity"
+                  data-cy="entityCreateSaveButton"
+                  type="submit"
+                  disabled={isNew && !statusFile}
 
-                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-8 py-2 bg-[#827349] text-base font-medium text-white hover:bg-[#827349] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#827349] sm:ml-3 sm:w-auto sm:text-sm"
-              // onClick={confirmDelete}
-              >
-                حفظ
-              </Button>
-              <Button
-                tag={Link}
-                id="cancel-save"
-                data-cy="entityCreateCancelButton"
-                to="/providers-categories"
-                replace
-                className="mt-3 w-full inline-flex justify-center rounded-md border border-[#909090] shadow-sm px-8 py-2 bg-[#909090] text-base font-medium text-[#ffffff] hover:bg-[#909090] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#909090] sm:mt-0 sm:w-auto sm:text-sm"
-              >
-              رجوع
-              </Button>
-            </div>
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-8 py-2 bg-[#827349] text-base font-medium text-white hover:bg-[#827349] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#827349] sm:ml-3 sm:w-auto sm:text-sm"
+                // onClick={confirmDelete}
+                >
+                  حفظ
+                </Button>
+                <Button
+                  tag={Link}
+                  id="cancel-save"
+                  data-cy="entityCreateCancelButton"
+                  to="/providers-categories"
+                  replace
+                  className="mt-3 w-full inline-flex justify-center rounded-md border border-[#909090] shadow-sm px-8 py-2 bg-[#909090] text-base font-medium text-[#ffffff] hover:bg-[#909090] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#909090] sm:mt-0 sm:w-auto sm:text-sm"
+                >
+                  رجوع
+                </Button>
+              </div>
 
 
 

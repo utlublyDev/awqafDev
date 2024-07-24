@@ -7,5 +7,5 @@ module.exports = {
   // If this URL is left empty (""), then it will be relative to the current context.
   // If you use an API server, in `prod` mode, you will need to enable CORS
   // (see the `engineeric.cors` common engineeric property in the `application-*.yml` configurations)
-  SERVER_API_URL: "",
+  SERVER_API_URL: "https://awqaf.engineeric.qa",
 };
