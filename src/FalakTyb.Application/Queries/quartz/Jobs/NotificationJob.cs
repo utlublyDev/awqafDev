@@ -72,12 +72,12 @@ namespace awqaf.Jobs
                         client.Headers.Add("accept", "application/json");
                         client.Headers.Add("accept-encoding", "gzip, deflate");
                         client.Headers.Add("Content-Type", "application/json");
-                        //var response = client.UploadString("http://192.168.1.2:5000/api/authenticate", JsonConvert.SerializeObject(body));
- //client.Headers.Add("Authorization", "Bearer "+JsonConvert.DeserializeObject(response).id_token.ToString());
+                        var response = client.UploadString("https://falakextst.islam.gov.qa/api/authenticate", JsonConvert.SerializeObject(body));
+ client.Headers.Add("Authorization", "Bearer "+JsonConvert.DeserializeObject(response).id_token.ToString());
 
                 
 
-  // var response2 = client.DownloadString("http://192.168.1.2:5000/api/contracts/checker/expiration");
+   var responseToRetuen = client.DownloadString("https://falakextst.islam.gov.qa/api/contracts/checker/expiration");
 
 
 

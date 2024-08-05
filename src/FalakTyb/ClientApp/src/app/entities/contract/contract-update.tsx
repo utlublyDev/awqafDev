@@ -90,7 +90,7 @@ export const ContractUpdate = (props: RouteComponentProps<{ id: string }>) => {
       formData.append('file', file);
 
       axios
-        .post(`${SERVER_API_URL}/api/AwqafFiles`, formData)
+        .post(`${SERVER_API_URL_File}/api/AwqafFiles`, formData)
         .then((response) => {
           // Handle the response from the server
           const newFileName = response.data.replace("falaktayab/", "");
@@ -168,7 +168,7 @@ export const ContractUpdate = (props: RouteComponentProps<{ id: string }>) => {
     values.contractStartDate = startContractDate;
     values.contractEndDate = endContractDate;
     values.creationDate = new Date();
-    values.contarctFileUrl = isNew ? `${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=` + nameFile : nameFile === "" ? contractEntity.contarctFileUrl : `${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=` + nameFile;
+    values.contarctFileUrl = isNew ? `${SERVER_API_URL_File}/api/AwqafFiles/get/fileData?FileName=` + nameFile : nameFile === "" ? contractEntity.contarctFileUrl : `${SERVER_API_URL_File}/api/AwqafFiles/get/fileData?FileName=` + nameFile;
 
 
 

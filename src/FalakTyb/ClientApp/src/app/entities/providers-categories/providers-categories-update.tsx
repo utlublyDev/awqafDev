@@ -100,7 +100,7 @@ export const ProvidersCategoriesUpdate = (
       formData.append('file', file);
 
       axios
-        .post(`${SERVER_API_URL}/api/AwqafFiles`, formData)
+        .post(`${SERVER_API_URL_File}/api/AwqafFiles`, formData)
         .then((response) => {
           // Handle the response from the server
           const newFileName = response.data.replace("falaktayab/", "");
@@ -170,7 +170,7 @@ export const ProvidersCategoriesUpdate = (
     values.creationDate = new Date();
     values.addedBy = account.login;
     values.itWillHaveHoldingCompaniesb = isCheckedHolding;
-    values.providersCategorieIconUrl = isNew ? `${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=` + nameFile : nameFile === "" ? providersCategoriesEntity.providersCategorieIconUrl : `${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=` + nameFile;
+    values.providersCategorieIconUrl = isNew ? `${SERVER_API_URL_File}/api/AwqafFiles/get/fileData?FileName=` + nameFile : nameFile === "" ? providersCategoriesEntity.providersCategorieIconUrl : `${SERVER_API_URL_File}/api/AwqafFiles/get/fileData?FileName=` + nameFile;
 
 
 

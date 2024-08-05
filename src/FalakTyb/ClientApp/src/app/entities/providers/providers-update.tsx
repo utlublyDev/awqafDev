@@ -124,7 +124,7 @@ const handleFileUpload = (file) => {
     formData.append('file', file);
 
     axios
-      .post(`${SERVER_API_URL}/api/AwqafFiles`, formData)
+      .post(`${SERVER_API_URL_File}/api/AwqafFiles`, formData)
       .then((response) => {
         // Handle the response from the server
         const newFileName = response.data.replace("falaktayab/", "");
@@ -228,7 +228,7 @@ const handleSubmission = (e) => {
     values.providerCode= Math.floor(1000 + Math.random() * 9000);
     values.latitude = location.lat.toString();
     values.longitude = location.lng.toString();
-    values.providerImageUrl = isNew?`${SERVER_API_URL}/get/fileData?FileName=`+nameFile:nameFile===""?providersEntity.providerImageUrl:`${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=`+nameFile;
+    values.providerImageUrl = isNew?`${SERVER_API_URL_File}/get/fileData?FileName=`+nameFile:nameFile===""?providersEntity.providerImageUrl:`${SERVER_API_URL_File}/api/AwqafFiles/get/fileData?FileName=`+nameFile;
     const entity = {
       ...providersEntity,
       ...values,

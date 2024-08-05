@@ -152,7 +152,7 @@ export const OffersUpdate = (props: RouteComponentProps<{ id: string }>) => {
       formData.append('file', file);
 
       axios
-        .post(`${SERVER_API_URL}/api/AwqafFiles`, formData)
+        .post(`${SERVER_API_URL_File}/api/AwqafFiles`, formData)
         .then((response) => {
           // Handle the response from the server
           const newFileName = response.data.replace("falaktayab/", "");
@@ -205,7 +205,7 @@ export const OffersUpdate = (props: RouteComponentProps<{ id: string }>) => {
     values.offerIsValidate = offerIsValidate
     values.isWebsiteOrApp = isWebsiteOrApp
 
-    values.offerImageUrl = isNew ? `${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=` + nameFile : nameFile === "" ? offersEntity.offerImageUrl : `${SERVER_API_URL}/api/AwqafFiles/get/fileData?FileName=` + nameFile;
+    values.offerImageUrl = isNew ? `${SERVER_API_URL_File}/api/AwqafFiles/get/fileData?FileName=` + nameFile : nameFile === "" ? offersEntity.offerImageUrl : `${SERVER_API_URL_File}/api/AwqafFiles/get/fileData?FileName=` + nameFile;
 
     values.addedBy = account?.login;
     const entity = {

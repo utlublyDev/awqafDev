@@ -105,6 +105,7 @@ module.exports = async (options) => {
           DEVELOPMENT: JSON.stringify(development),
           VERSION: JSON.stringify(environment.VERSION),
           SERVER_API_URL: JSON.stringify(environment.SERVER_API_URL),
+          SERVER_API_URL_File:JSON.stringify(environment.SERVER_API_URL_File)
         }),
         new ESLintPlugin({
           extensions: ["js", "ts", "jsx", "tsx"],
